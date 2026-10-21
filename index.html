@@ -1798,6 +1798,18 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/select&gt;
     &lt;/label&gt;
   &lt;/div&gt;
+  &lt;section class=&quot;cdp-graph-section&quot; aria-labelledby=&quot;cdp-graph-title&quot;&gt;
+    &lt;h2 id=&quot;cdp-graph-title&quot;&gt;角度と水平抗力&lt;/h2&gt;
+    &lt;div class=&quot;cdp-graph-root&quot; data-graph-root&gt;
+      &lt;svg class=&quot;cdp-graph&quot; role=&quot;img&quot; aria-label=&quot;角度0度から90度に対する裸ケーブルと浮力体付き区間の水平抗力。横軸は角度、縦軸は1 mあたりの水平力。&quot;&gt;&lt;/svg&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;viz-row text-small cdp-graph-legend&quot; aria-label=&quot;グラフの凡例&quot;&gt;
+      &lt;span&gt;&lt;span class=&quot;cdp-graph-key cdp-graph-bare-key&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;裸ケーブル（実線）&lt;/span&gt;
+      &lt;span&gt;&lt;span class=&quot;cdp-graph-key cdp-graph-buoyant-key&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;浮力体付き（破線）&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;viz-row text-small tabular-nums&quot; data-graph-detail aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+    &lt;p class=&quot;text-small&quot;&gt;0°でも軸方向の抗力が残ります。浮力体付き区間は約22.5°で最小になります。&lt;/p&gt;
+  &lt;/section&gt;
   &lt;svg class=&quot;cdp-diagram&quot; role=&quot;img&quot; aria-label=&quot;ケーブルの法線抗力と軸方向抗力、および水平成分の足し合わせ&quot;&gt;&lt;/svg&gt;
   &lt;div class=&quot;viz-row text-small&quot;&gt;
     &lt;span&gt;&lt;span class=&quot;cdp-swatch cdp-normal&quot;&gt;&lt;/span&gt;法線抗力 F⊥&lt;/span&gt;
@@ -1807,6 +1819,18 @@ html&gt;body{padding:0}&lt;/style&gt;
   &lt;div class=&quot;text-small tabular-nums&quot; data-detail aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;style&gt;
+  #cable-drag-projection .cdp-graph-section { margin-block:12px 24px; }
+  #cable-drag-projection .cdp-graph-root { width:100%; }
+  #cable-drag-projection .cdp-graph { display:block; width:100%; height:286px; }
+  #cable-drag-projection .cdp-graph text { font-size:12px; fill:var(--foreground); }
+  #cable-drag-projection .cdp-graph-frame { fill:none; stroke:var(--border); stroke-width:1; }
+  #cable-drag-projection .cdp-graph-grid { fill:none; stroke:var(--border); stroke-width:1; }
+  #cable-drag-projection .cdp-graph-guide { fill:none; stroke:var(--muted-foreground); stroke-width:1; stroke-dasharray:3 4; }
+  #cable-drag-projection .cdp-graph-bare { fill:none; stroke:var(--viz-series-1); stroke-width:2; }
+  #cable-drag-projection .cdp-graph-buoyant { fill:none; stroke:var(--viz-series-2); stroke-width:2; stroke-dasharray:6 4; }
+  #cable-drag-projection .cdp-graph-key { display:inline-block; width:24px; height:3px; margin-inline-end:5px; vertical-align:middle; }
+  #cable-drag-projection .cdp-graph-bare-key { background:var(--viz-series-1); }
+  #cable-drag-projection .cdp-graph-buoyant-key { background:repeating-linear-gradient(to right,var(--viz-series-2) 0 6px,transparent 6px 10px); }
   #cable-drag-projection .cdp-diagram { display:block; width:100%; height:420px; }
   #cable-drag-projection .cdp-diagram text { font-size:12px; fill:var(--foreground); }
   #cable-drag-projection .cdp-swatch { display:inline-block; width:16px; height:3px; vertical-align:middle; margin-inline-end:5px; }
@@ -1830,6 +1854,9 @@ html&gt;body{padding:0}&lt;/style&gt;
   const angleOutput=root.querySelector(&#x27;[data-angle]&#x27;);
   const materialInput=root.querySelector(&#x27;[data-material]&#x27;);
   const detail=root.querySelector(&#x27;[data-detail]&#x27;);
+  const graphRoot=root.querySelector(&#x27;[data-graph-root]&#x27;);
+  const graph=root.querySelector(&#x27;.cdp-graph&#x27;);
+  const graphDetail=root.querySelector(&#x27;[data-graph-detail]&#x27;);
   const ns=&#x27;http://www.w3.org/2000/svg&#x27;;
   const types={bare:{diameter:0.116,cn:1.2,ca:0.008},buoyant:{diameter:0.361,cn:2.617,ca:0.345}};
   let state={theta:30,material:&#x27;bare&#x27;};
@@ -1841,6 +1868,74 @@ html&gt;body{padding:0}&lt;/style&gt;
     return {theta:Math.min(90,Math.max(0,data.theta)),material:data.material};
   }
   state=savedState(window.openai?.widgetState) || state;
+  function horizontalForce(theta,material) {
+    const t=theta*Math.PI/180,d=types[material];
+    return .5*1025*d.diameter*(d.cn*Math.sin(t)**3+Math.PI*d.ca*Math.cos(t)**3);
+  }
+  const graphSeries=Object.keys(types).map(material=&gt;({
+    material,
+    points:Array.from({length:181},(_,i)=&gt;({theta:i/2,force:horizontalForce(i/2,material)}))
+  }));
+  const graphYMax=Math.ceil(Math.max(...graphSeries.flatMap(series=&gt;series.points.map(p=&gt;p.force)))/100)*100;
+  let graphLayout=null;
+  function graphNode(tag,attrs={},text) {
+    const n=document.createElementNS(ns,tag);
+    Object.entries(attrs).forEach(([k,v])=&gt;n.setAttribute(k,String(v)));
+    if(text!==undefined) n.textContent=text;
+    graph.appendChild(n); return n;
+  }
+  function graphLabel(x,y,text,anchor=&#x27;middle&#x27;,extra={}) {
+    return graphNode(&#x27;text&#x27;,{x,y,&#x27;text-anchor&#x27;:anchor,...extra},text);
+  }
+  function drawGraph(theta) {
+    const width=Math.max(1,graphRoot.getBoundingClientRect().width),height=286;
+    if(!graphLayout || graphLayout.width!==width) {
+      const left=60,right=width-16,top=14,bottom=232;
+      const x=value=&gt;left+4+(right-left-8)*value/90;
+      const y=value=&gt;bottom-4-(bottom-top-8)*value/graphYMax;
+      graph.setAttribute(&#x27;viewBox&#x27;,`0 0 ${width} ${height}`);
+      graph.replaceChildren();
+      graphNode(&#x27;title&#x27;,{},&#x27;角度と水平抗力&#x27;);
+      graphNode(&#x27;desc&#x27;,{},&#x27;裸ケーブルは実線、浮力体付き区間は破線。同じ縦軸で比較し、縦のガイドと2点は選択角度を示す。流速1 m/s、区間長1 m、海水密度1025 kg/m³。&#x27;);
+      graphNode(&#x27;rect&#x27;,{x:left,y:top,width:right-left,height:bottom-top,class:&#x27;cdp-graph-frame&#x27;,&#x27;data-chart-frame&#x27;:&#x27;&#x27;});
+      Array.from({length:6},(_,i)=&gt;i*graphYMax/5).forEach(value=&gt;{
+        if(value&gt;0 &amp;&amp; value&lt;graphYMax) graphNode(&#x27;line&#x27;,{x1:left,y1:y(value),x2:right,y2:y(value),class:&#x27;cdp-graph-grid&#x27;});
+        graphLabel(left-8,y(value)+4,String(Math.round(value)),&#x27;end&#x27;);
+      });
+      const ticks=width&lt;480?[0,30,60,90]:[0,15,30,45,60,75,90];
+      ticks.forEach(value=&gt;{
+        graphNode(&#x27;line&#x27;,{x1:x(value),y1:bottom,x2:x(value),y2:bottom+4,class:&#x27;cdp-graph-grid&#x27;});
+        graphLabel(x(value),bottom+20,String(value));
+      });
+      graphLabel((left+right)/2,278,&#x27;θ [°]&#x27;,&#x27;middle&#x27;,{class:&#x27;axis-title&#x27;,&#x27;data-axis&#x27;:&#x27;x&#x27;});
+      graphLabel(15,(top+bottom)/2,&#x27;水平力 [N/m]&#x27;,&#x27;middle&#x27;,{class:&#x27;axis-title&#x27;,&#x27;data-axis&#x27;:&#x27;y&#x27;,transform:`rotate(-90 15 ${(top+bottom)/2})`});
+      graphSeries.forEach(series=&gt;{
+        const path=series.points.map((p,i)=&gt;`${i?&#x27;L&#x27;:&#x27;M&#x27;} ${x(p.theta).toFixed(3)} ${y(p.force).toFixed(3)}`).join(&#x27; &#x27;);
+        graphNode(&#x27;path&#x27;,{d:path,class:`cdp-graph-${series.material}`,&#x27;data-graph-series&#x27;:series.material});
+      });
+      const guide=graphNode(&#x27;line&#x27;,{y1:top,y2:bottom,class:&#x27;cdp-graph-guide&#x27;,&#x27;data-graph-angle-guide&#x27;:&#x27;&#x27;});
+      const markers=Object.fromEntries(graphSeries.map((series,index)=&gt;[
+        series.material,
+        graphNode(&#x27;circle&#x27;,{r:4,fill:`var(--viz-series-${index+1})`,&#x27;data-graph-marker&#x27;:series.material})
+      ]));
+      graphLayout={width,x,y,guide,markers};
+    }
+    const layout=graphLayout;
+    layout.guide.setAttribute(&#x27;x1&#x27;,layout.x(theta));
+    layout.guide.setAttribute(&#x27;x2&#x27;,layout.x(theta));
+    Object.keys(types).forEach(material=&gt;{
+      const force=horizontalForce(theta,material),marker=layout.markers[material];
+      marker.setAttribute(&#x27;cx&#x27;,layout.x(theta));
+      marker.setAttribute(&#x27;cy&#x27;,layout.y(force));
+      marker.setAttribute(&#x27;data-horizontal-force&#x27;,force.toFixed(6));
+    });
+    graph.setAttribute(&#x27;data-theta&#x27;,theta.toFixed(3));
+    graphDetail.replaceChildren(...[
+      `θ = ${Math.round(theta)}°`,
+      `裸ケーブル ${horizontalForce(theta,&#x27;bare&#x27;).toFixed(1)} N/m`,
+      `浮力体付き ${horizontalForce(theta,&#x27;buoyant&#x27;).toFixed(1)} N/m`
+    ].map(text=&gt;{const span=document.createElement(&#x27;span&#x27;);span.textContent=text;return span;}));
+  }
   function node(tag,attrs={},text) {
     const n=document.createElementNS(ns,tag);
     Object.entries(attrs).forEach(([k,v])=&gt;n.setAttribute(k,String(v)));
@@ -1869,6 +1964,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     node(&#x27;path&#x27;,{d:`M ${a.x} ${a.y} A ${r} ${r} 0 0 1 ${b.x} ${b.y}`,class:&#x27;cdp-flow&#x27;});
   }
   function draw(theta,material) {
+    drawGraph(theta);
     const width=Math.max(300,root.getBoundingClientRect().width);
     const narrow=width&lt;480;
     svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${width} 420`);
@@ -1958,6 +2054,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     if(recovered){state=recovered;render();}
   });
   new ResizeObserver(()=&gt;render()).observe(root);
+  new ResizeObserver(()=&gt;drawGraph(state.theta)).observe(graphRoot);
   render();
 })();
 &lt;/script&gt;
