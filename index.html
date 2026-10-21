@@ -1,17 +1,16 @@
 <!doctype html>
-<html lang="en" data-visualize-standalone>
-<head>
+<html lang="ja" data-visualize-standalone=""><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>ケーブル抗力の水平成分</title>
-<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255),rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;max-width:1148px;margin:0 auto;padding:32px 24px;background:inherit}iframe{display:block;width:100%;height:1px;min-height:300px;margin:0;border:0;overflow:hidden}@media(max-width:600px){body{padding:24px 16px}}</style>
 
 </head>
 <body>
 <iframe id="codex-visualization" sandbox="allow-scripts" referrerpolicy="no-referrer" title="ケーブル抗力の水平成分" data-srcdoc="&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
+&lt;html lang=&quot;ja&quot; data-visualize-standalone&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
@@ -1787,41 +1786,88 @@ html&gt;body{padding:0}&lt;/style&gt;
 })();
 &lt;/script&gt;
 &lt;div id=&quot;cable-drag-projection&quot;&gt;
-  &lt;div class=&quot;viz-controls&quot;&gt;
-    &lt;label class=&quot;form-label&quot;&gt;ケーブルと水平流の角度 θ：&lt;output class=&quot;tabular-nums&quot; data-angle&gt;30°&lt;/output&gt;
-      &lt;input class=&quot;form-range&quot; data-angle-input aria-label=&quot;ケーブルと水平流の角度&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;90&quot; step=&quot;1&quot; value=&quot;30&quot;&gt;
-    &lt;/label&gt;
-    &lt;label class=&quot;form-label&quot;&gt;区間
-      &lt;select class=&quot;form-select&quot; data-material aria-label=&quot;ケーブル区間&quot;&gt;
+  &lt;header class=&quot;cdp-page-heading&quot;&gt;
+    &lt;h1&gt;ケーブル抗力の水平成分&lt;/h1&gt;
+    &lt;p class=&quot;text-small&quot;&gt;水平流 1 m/s · ケーブル 1 mあたり&lt;/p&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;cdp-controls&quot;&gt;
+    &lt;div class=&quot;cdp-control&quot;&gt;
+      &lt;div class=&quot;cdp-control-label&quot;&gt;
+        &lt;label for=&quot;cdp-angle&quot;&gt;水平流との角度 θ&lt;/label&gt;
+        &lt;output class=&quot;cdp-angle-value tabular-nums&quot; data-angle for=&quot;cdp-angle&quot;&gt;30°&lt;/output&gt;
+      &lt;/div&gt;
+      &lt;input class=&quot;form-range&quot; id=&quot;cdp-angle&quot; data-angle-input aria-label=&quot;ケーブルと水平流の角度&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;90&quot; step=&quot;1&quot; value=&quot;30&quot;&gt;
+      &lt;div class=&quot;cdp-range-limits text-small&quot;&gt;&lt;span&gt;0° 平行&lt;/span&gt;&lt;span&gt;90° 直角&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;cdp-control&quot;&gt;
+      &lt;div class=&quot;cdp-control-label&quot;&gt;&lt;label for=&quot;cdp-material&quot;&gt;分解図に表示する区間&lt;/label&gt;&lt;/div&gt;
+      &lt;select class=&quot;form-select&quot; id=&quot;cdp-material&quot; data-material aria-label=&quot;ケーブル区間&quot;&gt;
         &lt;option value=&quot;buoyant&quot;&gt;浮力体付き&lt;/option&gt;
         &lt;option value=&quot;bare&quot;&gt;裸ケーブル&lt;/option&gt;
       &lt;/select&gt;
-    &lt;/label&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
+  &lt;div class=&quot;cdp-panels&quot;&gt;
   &lt;section class=&quot;cdp-graph-section&quot; aria-labelledby=&quot;cdp-graph-title&quot;&gt;
-    &lt;h2 id=&quot;cdp-graph-title&quot;&gt;角度と水平抗力&lt;/h2&gt;
+    &lt;div class=&quot;cdp-panel-heading&quot;&gt;&lt;h2 id=&quot;cdp-graph-title&quot;&gt;角度と水平抗力&lt;/h2&gt;&lt;span class=&quot;text-small&quot;&gt;2つの区間を比較&lt;/span&gt;&lt;/div&gt;
     &lt;div class=&quot;cdp-graph-root&quot; data-graph-root&gt;
       &lt;svg class=&quot;cdp-graph&quot; role=&quot;img&quot; aria-label=&quot;角度0度から90度に対する裸ケーブルと浮力体付き区間の水平抗力。横軸は角度、縦軸は1 mあたりの水平力。&quot;&gt;&lt;/svg&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;viz-row text-small cdp-graph-legend&quot; aria-label=&quot;グラフの凡例&quot;&gt;
-      &lt;span&gt;&lt;span class=&quot;cdp-graph-key cdp-graph-bare-key&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;裸ケーブル（実線）&lt;/span&gt;
-      &lt;span&gt;&lt;span class=&quot;cdp-graph-key cdp-graph-buoyant-key&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;浮力体付き（破線）&lt;/span&gt;
+    &lt;div class=&quot;cdp-value-heading text-small&quot;&gt;&lt;span&gt;選択角度の水平力&lt;/span&gt;&lt;span&gt;N/m&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;cdp-series-values tabular-nums&quot; data-graph-detail aria-live=&quot;polite&quot;&gt;
+      &lt;div class=&quot;cdp-series-row&quot;&gt;&lt;span&gt;&lt;span class=&quot;cdp-graph-key cdp-graph-bare-key&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;裸ケーブル&lt;/span&gt;&lt;output data-bare-force&gt;9.9&lt;/output&gt;&lt;/div&gt;
+      &lt;div class=&quot;cdp-series-row&quot;&gt;&lt;span&gt;&lt;span class=&quot;cdp-graph-key cdp-graph-buoyant-key&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;浮力体付き&lt;/span&gt;&lt;output data-buoyant-force&gt;190.8&lt;/output&gt;&lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;viz-row text-small tabular-nums&quot; data-graph-detail aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
-    &lt;p class=&quot;text-small&quot;&gt;0°でも軸方向の抗力が残ります。浮力体付き区間は約22.5°で最小になります。&lt;/p&gt;
   &lt;/section&gt;
+  &lt;section class=&quot;cdp-diagram-section&quot; aria-labelledby=&quot;cdp-diagram-title&quot;&gt;
+  &lt;div class=&quot;cdp-panel-heading&quot;&gt;&lt;h2 id=&quot;cdp-diagram-title&quot;&gt;力の分解&lt;/h2&gt;&lt;span class=&quot;text-small&quot; data-material-label&gt;裸ケーブル&lt;/span&gt;&lt;/div&gt;
   &lt;svg class=&quot;cdp-diagram&quot; role=&quot;img&quot; aria-label=&quot;ケーブルの法線抗力と軸方向抗力、および水平成分の足し合わせ&quot;&gt;&lt;/svg&gt;
-  &lt;div class=&quot;viz-row text-small&quot;&gt;
+  &lt;div class=&quot;cdp-diagram-legend text-small&quot;&gt;
     &lt;span&gt;&lt;span class=&quot;cdp-swatch cdp-normal&quot;&gt;&lt;/span&gt;法線抗力 F⊥&lt;/span&gt;
     &lt;span&gt;&lt;span class=&quot;cdp-swatch cdp-axial&quot;&gt;&lt;/span&gt;軸方向抗力 F∥&lt;/span&gt;
     &lt;span&gt;&lt;span class=&quot;cdp-swatch cdp-total&quot;&gt;&lt;/span&gt;合力 F_D&lt;/span&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;text-small tabular-nums&quot; data-detail aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;cdp-value-heading text-small&quot;&gt;&lt;span&gt;水平成分の和&lt;/span&gt;&lt;span&gt;N/m&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;cdp-component-values tabular-nums&quot; data-detail aria-live=&quot;polite&quot;&gt;
+    &lt;div&gt;&lt;span class=&quot;text-small&quot;&gt;法線成分&lt;/span&gt;&lt;output data-normal-horizontal&gt;8.9&lt;/output&gt;&lt;/div&gt;
+    &lt;span class=&quot;cdp-math-sign&quot; aria-hidden=&quot;true&quot;&gt;+&lt;/span&gt;
+    &lt;div&gt;&lt;span class=&quot;text-small&quot;&gt;軸方向成分&lt;/span&gt;&lt;output data-axial-horizontal&gt;1.0&lt;/output&gt;&lt;/div&gt;
+    &lt;span class=&quot;cdp-math-sign&quot; aria-hidden=&quot;true&quot;&gt;=&lt;/span&gt;
+    &lt;div&gt;&lt;span class=&quot;text-small&quot;&gt;水平力&lt;/span&gt;&lt;output data-total-horizontal&gt;9.9&lt;/output&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;/section&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;cdp-page-note text-small&quot;&gt;0°でも軸方向の抗力が残ります。浮力体付き区間の水平力は約22.5°で最小になります。&lt;/p&gt;
 &lt;/div&gt;
 &lt;style&gt;
-  #cable-drag-projection .cdp-graph-section { margin-block:12px 24px; }
+  #cable-drag-projection { width:100%; }
+  #cable-drag-projection .cdp-page-heading { display:grid; gap:6px; margin-bottom:28px; }
+  #cable-drag-projection h1,#cable-drag-projection h2 { margin:0; }
+  #cable-drag-projection .cdp-page-heading p { margin:0; color:var(--muted-foreground); }
+  #cable-drag-projection .cdp-controls { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(180px,1fr); gap:36px; padding-bottom:24px; margin-bottom:28px; border-bottom:1px solid var(--border); }
+  #cable-drag-projection .cdp-control { min-width:0; }
+  #cable-drag-projection .cdp-control-label { display:flex; align-items:baseline; justify-content:space-between; gap:12px; min-height:32px; }
+  #cable-drag-projection .cdp-angle-value { font-weight:500; }
+  #cable-drag-projection .cdp-range-limits { display:flex; justify-content:space-between; color:var(--muted-foreground); margin-top:2px; }
+  #cable-drag-projection .cdp-panels { display:grid; grid-template-columns:minmax(0,1fr); gap:32px; }
+  #cable-drag-projection .cdp-panels section { min-width:0; }
+  #cable-drag-projection .cdp-panel-heading { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 12px; margin-bottom:12px; }
+  #cable-drag-projection .cdp-panel-heading span { color:var(--muted-foreground); }
+  #cable-drag-projection .cdp-value-heading { display:flex; justify-content:space-between; gap:12px; color:var(--muted-foreground); margin-top:12px; margin-bottom:4px; }
+  #cable-drag-projection .cdp-series-row { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:5px; }
+  #cable-drag-projection .cdp-series-row output { font-weight:500; }
+  #cable-drag-projection .cdp-diagram-legend { display:flex; gap:6px 16px; flex-wrap:wrap; margin-top:4px; }
+  #cable-drag-projection .cdp-component-values { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items:end; gap:6px; }
+  #cable-drag-projection .cdp-component-values div { display:grid; gap:4px; }
+  #cable-drag-projection .cdp-component-values div span { color:var(--muted-foreground); }
+  #cable-drag-projection .cdp-component-values output { font-weight:500; }
+  #cable-drag-projection .cdp-math-sign { padding-bottom:1px; color:var(--muted-foreground); }
+  #cable-drag-projection .cdp-page-note { color:var(--muted-foreground); margin:28px 0 0; padding-top:16px; border-top:1px solid var(--border); }
+  @media(min-width:960px) { #cable-drag-projection .cdp-panels { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:36px; } }
+  @media(max-width:560px) { #cable-drag-projection .cdp-controls { grid-template-columns:minmax(0,1fr); gap:16px; } }
   #cable-drag-projection .cdp-graph-root { width:100%; }
-  #cable-drag-projection .cdp-graph { display:block; width:100%; height:286px; }
+  #cable-drag-projection .cdp-graph { display:block; width:100%; height:338px; }
+  @media(max-width:479px) { #cable-drag-projection .cdp-graph { height:286px; } }
   #cable-drag-projection .cdp-graph text { font-size:12px; fill:var(--foreground); }
   #cable-drag-projection .cdp-graph-frame { fill:none; stroke:var(--border); stroke-width:1; }
   #cable-drag-projection .cdp-graph-grid { fill:none; stroke:var(--border); stroke-width:1; }
@@ -1831,20 +1877,20 @@ html&gt;body{padding:0}&lt;/style&gt;
   #cable-drag-projection .cdp-graph-key { display:inline-block; width:24px; height:3px; margin-inline-end:5px; vertical-align:middle; }
   #cable-drag-projection .cdp-graph-bare-key { background:var(--viz-series-1); }
   #cable-drag-projection .cdp-graph-buoyant-key { background:repeating-linear-gradient(to right,var(--viz-series-2) 0 6px,transparent 6px 10px); }
-  #cable-drag-projection .cdp-diagram { display:block; width:100%; height:420px; }
+  #cable-drag-projection .cdp-diagram { display:block; width:100%; height:338px; }
   #cable-drag-projection .cdp-diagram text { font-size:12px; fill:var(--foreground); }
   #cable-drag-projection .cdp-swatch { display:inline-block; width:16px; height:3px; vertical-align:middle; margin-inline-end:5px; }
-  #cable-drag-projection .cdp-normal { background:var(--viz-series-1); }
-  #cable-drag-projection .cdp-axial { background:var(--viz-series-2); }
+  #cable-drag-projection .cdp-normal { background:var(--viz-series-3); }
+  #cable-drag-projection .cdp-axial { background:var(--viz-series-5); }
   #cable-drag-projection .cdp-total { background:var(--foreground); }
   #cable-drag-projection .cdp-cable { stroke:var(--foreground); stroke-width:2; fill:none; }
   #cable-drag-projection .cdp-neutral { stroke:var(--border); stroke-width:1; fill:none; }
   #cable-drag-projection .cdp-flow { stroke:var(--foreground); stroke-width:1.5; fill:none; }
-  #cable-drag-projection .cdp-force-normal { stroke:var(--viz-series-1); stroke-width:2.5; fill:none; }
-  #cable-drag-projection .cdp-force-axial { stroke:var(--viz-series-2); stroke-width:2.5; fill:none; }
+  #cable-drag-projection .cdp-force-normal { stroke:var(--viz-series-3); stroke-width:2.5; fill:none; }
+  #cable-drag-projection .cdp-force-axial { stroke:var(--viz-series-5); stroke-width:2.5; fill:none; }
   #cable-drag-projection .cdp-force-total { stroke:var(--foreground); stroke-width:1.5; fill:none; }
   #cable-drag-projection .cdp-projection { stroke:var(--border); stroke-width:1; stroke-dasharray:4 4; fill:none; }
-  #cable-drag-projection .cdp-translated { stroke:var(--viz-series-2); stroke-width:1.5; stroke-dasharray:5 4; fill:none; }
+  #cable-drag-projection .cdp-translated { stroke:var(--viz-series-5); stroke-width:1.5; stroke-dasharray:5 4; fill:none; }
 &lt;/style&gt;
 &lt;script&gt;
 (() =&gt; {
@@ -1888,9 +1934,9 @@ html&gt;body{padding:0}&lt;/style&gt;
     return graphNode(&#x27;text&#x27;,{x,y,&#x27;text-anchor&#x27;:anchor,...extra},text);
   }
   function drawGraph(theta) {
-    const width=Math.max(1,graphRoot.getBoundingClientRect().width),height=286;
-    if(!graphLayout || graphLayout.width!==width) {
-      const left=60,right=width-16,top=14,bottom=232;
+    const width=Math.max(1,graphRoot.getBoundingClientRect().width),height=graph.getBoundingClientRect().height;
+    if(!graphLayout || graphLayout.width!==width || graphLayout.height!==height) {
+      const left=60,right=width-16,top=14,bottom=height-54;
       const x=value=&gt;left+4+(right-left-8)*value/90;
       const y=value=&gt;bottom-4-(bottom-top-8)*value/graphYMax;
       graph.setAttribute(&#x27;viewBox&#x27;,`0 0 ${width} ${height}`);
@@ -1907,7 +1953,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         graphNode(&#x27;line&#x27;,{x1:x(value),y1:bottom,x2:x(value),y2:bottom+4,class:&#x27;cdp-graph-grid&#x27;});
         graphLabel(x(value),bottom+20,String(value));
       });
-      graphLabel((left+right)/2,278,&#x27;θ [°]&#x27;,&#x27;middle&#x27;,{class:&#x27;axis-title&#x27;,&#x27;data-axis&#x27;:&#x27;x&#x27;});
+      graphLabel((left+right)/2,height-8,&#x27;θ [°]&#x27;,&#x27;middle&#x27;,{class:&#x27;axis-title&#x27;,&#x27;data-axis&#x27;:&#x27;x&#x27;});
       graphLabel(15,(top+bottom)/2,&#x27;水平力 [N/m]&#x27;,&#x27;middle&#x27;,{class:&#x27;axis-title&#x27;,&#x27;data-axis&#x27;:&#x27;y&#x27;,transform:`rotate(-90 15 ${(top+bottom)/2})`});
       graphSeries.forEach(series=&gt;{
         const path=series.points.map((p,i)=&gt;`${i?&#x27;L&#x27;:&#x27;M&#x27;} ${x(p.theta).toFixed(3)} ${y(p.force).toFixed(3)}`).join(&#x27; &#x27;);
@@ -1918,7 +1964,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         series.material,
         graphNode(&#x27;circle&#x27;,{r:4,fill:`var(--viz-series-${index+1})`,&#x27;data-graph-marker&#x27;:series.material})
       ]));
-      graphLayout={width,x,y,guide,markers};
+      graphLayout={width,height,x,y,guide,markers};
     }
     const layout=graphLayout;
     layout.guide.setAttribute(&#x27;x1&#x27;,layout.x(theta));
@@ -1930,11 +1976,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       marker.setAttribute(&#x27;data-horizontal-force&#x27;,force.toFixed(6));
     });
     graph.setAttribute(&#x27;data-theta&#x27;,theta.toFixed(3));
-    graphDetail.replaceChildren(...[
-      `θ = ${Math.round(theta)}°`,
-      `裸ケーブル ${horizontalForce(theta,&#x27;bare&#x27;).toFixed(1)} N/m`,
-      `浮力体付き ${horizontalForce(theta,&#x27;buoyant&#x27;).toFixed(1)} N/m`
-    ].map(text=&gt;{const span=document.createElement(&#x27;span&#x27;);span.textContent=text;return span;}));
+    graphDetail.querySelector(&#x27;[data-bare-force]&#x27;).textContent=horizontalForce(theta,&#x27;bare&#x27;).toFixed(1);
+    graphDetail.querySelector(&#x27;[data-buoyant-force]&#x27;).textContent=horizontalForce(theta,&#x27;buoyant&#x27;).toFixed(1);
   }
   function node(tag,attrs={},text) {
     const n=document.createElementNS(ns,tag);
@@ -1965,9 +2008,9 @@ html&gt;body{padding:0}&lt;/style&gt;
   }
   function draw(theta,material) {
     drawGraph(theta);
-    const width=Math.max(300,root.getBoundingClientRect().width);
+    const width=Math.max(1,svg.getBoundingClientRect().width);
     const narrow=width&lt;480;
-    svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${width} 420`);
+    svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${width} 338`);
     svg.replaceChildren();
     node(&#x27;title&#x27;,{},&#x27;ケーブルに作用する抗力の水平成分&#x27;);
     node(&#x27;desc&#x27;,{},&#x27;法線抗力の水平投影と軸方向抗力の水平投影を、下の矢印で横に並べて足す。破線は軸方向抗力を平行移動したもの。角度はケーブルと水平流の間。&#x27;);
@@ -1977,19 +2020,19 @@ html&gt;body{padding:0}&lt;/style&gt;
     const fa=.5*1025*data.ca*Math.PI*data.diameter*c*c;
     const hx=fn*s+fa*c, vz=fn*c-fa*s;
     const maximum=Math.max(fn,fa,Math.hypot(hx,vz),1);
-    const scale=Math.min(195,width*.48,125*maximum/Math.max(fn*c,fa*s,Math.abs(vz),1))/maximum;
-    const origin={x:width*.25,y:151};
+    const scale=Math.min(150,width*.48,95*maximum/Math.max(fn*c,fa*s,Math.abs(vz),1))/maximum;
+    const origin={x:Math.max(68,width*.24),y:126};
     const a={x:origin.x+scale*fn*s,y:origin.y-scale*fn*c};
     const b={x:origin.x+scale*fa*c,y:origin.y+scale*fa*s};
     const end={x:a.x+scale*fa*c,y:a.y+scale*fa*s};
-    const extent=Math.min(165,width*.4);
+    const extent=Math.min(90,width*.30);
     line({x:origin.x-54*c,y:origin.y-54*s},{x:origin.x+extent*c,y:origin.y+extent*s},&#x27;cdp-cable&#x27;);
     const cableLabel={x:origin.x+extent*c,y:origin.y+extent*s};
     label(cableLabel.x+8,cableLabel.y+20,&#x27;ケーブル&#x27;);
     arrow({x:24,y:28},{x:126,y:28},&#x27;cdp-flow&#x27;);
     label(24,16,&#x27;水平流 U = 1 m/s&#x27;);
     arrow({x:origin.x,y:origin.y},{x:width-18,y:origin.y},&#x27;cdp-neutral&#x27;,5);
-    line(origin,{x:origin.x,y:53},&#x27;cdp-neutral&#x27;);
+    line(origin,{x:origin.x,y:38},&#x27;cdp-neutral&#x27;);
     label(width-18,origin.y+18,&#x27;水平&#x27;,&#x27;end&#x27;);
     angleArc(origin,31,0,thetaRad);
     if(theta&gt;2) label(origin.x+43*Math.cos(thetaRad/2),origin.y+43*Math.sin(thetaRad/2)+5,&#x27;θ&#x27;);
@@ -2004,9 +2047,9 @@ html&gt;body{padding:0}&lt;/style&gt;
     if(fn&gt;maximum*.035) label((origin.x+a.x)/2-12*c,(origin.y+a.y)/2-12*s-5,&#x27;F⊥&#x27;,&#x27;end&#x27;);
     if(fa&gt;maximum*.035) label((origin.x+b.x)/2+14*s,(origin.y+b.y)/2-14*c+13,&#x27;F∥&#x27;);
     const endAnchor=end.x&gt;width-55?&#x27;end&#x27;:&#x27;start&#x27;;
-    label(end.x+(endAnchor===&#x27;end&#x27;?-5:9),Math.max(18,end.y-9),&#x27;合力&#x27;);
+    label(end.x+(endAnchor===&#x27;end&#x27;?-5:9),Math.max(18,end.y-9),&#x27;合力&#x27;,endAnchor);
     // Projections are arranged consecutively: O -&gt; normal endpoint -&gt; total endpoint.
-    const y=341;
+    const y=276;
     line(a,{x:a.x,y},&#x27;cdp-projection&#x27;);
     line(end,{x:end.x,y},&#x27;cdp-projection&#x27;);
     line(origin,{x:origin.x,y:y+12},&#x27;cdp-projection&#x27;);
@@ -2014,18 +2057,21 @@ html&gt;body{padding:0}&lt;/style&gt;
     arrow(p0,p1,&#x27;cdp-force-normal&#x27;,6);
     arrow(p1,p2,&#x27;cdp-force-axial&#x27;,6);
     node(&#x27;circle&#x27;,{cx:p1.x,cy:y,r:2.5,fill:&#x27;var(--foreground)&#x27;});
-    label(16,315,&#x27;水平成分を足す&#x27;);
+    label(16,252,&#x27;水平成分を足す&#x27;);
     const nMid=(p0.x+p1.x)/2,aMid=(p1.x+p2.x)/2;
     // Long labels use separate rows at narrow widths and near angular endpoints.
-    label(Math.max(65,Math.min(width-60,nMid)),366,&#x27;F⊥ sinθ&#x27;,&#x27;middle&#x27;);
+    label(Math.max(65,Math.min(width-60,nMid)),301,&#x27;F⊥ sinθ&#x27;,&#x27;middle&#x27;);
     const secondRow=narrow || Math.abs(aMid-nMid)&lt;135;
-    label(Math.max(65,Math.min(width-60,aMid)),secondRow?388:366,&#x27;F∥ cosθ&#x27;,&#x27;middle&#x27;);
+    label(Math.max(65,Math.min(width-60,aMid)),secondRow?323:301,&#x27;F∥ cosθ&#x27;,&#x27;middle&#x27;);
     if(narrow || Math.abs(aMid-nMid)&lt;135) {
-      line({x:nMid,y:y+3},{x:Math.max(65,Math.min(width-60,nMid)),y:350},&#x27;cdp-neutral&#x27;);
-      line({x:aMid,y:y+3},{x:Math.max(65,Math.min(width-60,aMid)),y:372},&#x27;cdp-neutral&#x27;);
+      line({x:nMid,y:y+3},{x:Math.max(65,Math.min(width-60,nMid)),y:285},&#x27;cdp-neutral&#x27;);
+      line({x:aMid,y:y+3},{x:Math.max(65,Math.min(width-60,aMid)),y:307},&#x27;cdp-neutral&#x27;);
     }
     angleOutput.textContent=`${Math.round(theta)}°`;
-    detail.textContent=`1 mあたり：法線抗力の水平成分 ${(fn*s).toFixed(1)} N/m ＋ 軸方向抗力の水平成分 ${(fa*c).toFixed(1)} N/m → 水平力 ${hx.toFixed(1)} N/m`;
+    detail.querySelector(&#x27;[data-normal-horizontal]&#x27;).textContent=(fn*s).toFixed(1);
+    detail.querySelector(&#x27;[data-axial-horizontal]&#x27;).textContent=(fa*c).toFixed(1);
+    detail.querySelector(&#x27;[data-total-horizontal]&#x27;).textContent=hx.toFixed(1);
+    root.querySelector(&#x27;[data-material-label]&#x27;).textContent=material===&#x27;bare&#x27;?&#x27;裸ケーブル&#x27;:&#x27;浮力体付き&#x27;;
     svg.setAttribute(&#x27;data-horizontal-force&#x27;,hx.toFixed(6));
     svg.setAttribute(&#x27;data-theta&#x27;,theta.toFixed(3));
   }
@@ -2847,5 +2893,6 @@ html&gt;body{padding:0}&lt;/style&gt;
   delete frame.dataset.srcdoc;
 })();
 </script>
-</body>
-</html>
+
+
+</body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>
